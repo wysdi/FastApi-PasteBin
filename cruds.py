@@ -8,7 +8,7 @@ from datetime import datetime, date, timedelta
 
 def crud_create_paste(db: Session, paste: PasteIn):
 
-    # if expired time not specifield will be expired after 6 hours
+    # if expired time not specified, it will be expired after 6 hours
     if paste.expired_at is None:
         current = datetime.today()
         paste.expired_at = current + timedelta(hours=6)
@@ -36,11 +36,23 @@ def crud_get_paste(db: Session, paste_id: str):
 
 
 def crud_delete_paste(db: Session, paste_id: str):
-    db_delete = db.query(Paste).filter(Paste.paste_id == paste_id).first()
+    db_delete = crud_get_paste(db, paste_id)
     if db_delete:
         db.delete(db_delete)
         db.commit()
         return True
+
+
+def crud_update_paste(db: Session, paste_id: str, paste: PasteIn):
+    db_paste = crud_get_paste(db, paste_id)
+    if db_paste:
+        paste_data = paste.dict(exclude_unset=True)
+        for key, value in paste_data.items():
+            setattr(db_paste, key, value)
+        db.add(db_paste)
+        db.commit()
+        db.refresh(db_paste)
+        return db_paste
 
 
 
