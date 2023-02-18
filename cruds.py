@@ -55,5 +55,12 @@ def crud_update_paste(db: Session, paste_id: str, paste: PasteIn):
         return db_paste
 
 
+def crud_paste_public_url(db: Session, paste_url: str):
+    db_paste = db.query(Paste).filter(Paste.url == paste_url).first()
+    if db_paste:
+        current = datetime.today()
+        if db_paste.expired_at > current:
+            return db_paste.content
+
 
 

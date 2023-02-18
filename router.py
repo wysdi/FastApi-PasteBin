@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from schemas import Paste, PasteIn
 from database import SessionLocal, engine
 
-from cruds import crud_create_paste, crud_get_paste, crud_get_pastes, crud_delete_paste, crud_update_paste
+from cruds import crud_create_paste, crud_get_paste, crud_get_pastes, crud_delete_paste, crud_update_paste, crud_paste_public_url
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from typing import List, Optional
 router = APIRouter()
@@ -57,3 +57,12 @@ def get_paste(paste_id: str, db: Session = Depends(get_db)):
 def get_pastes(page: int = 1, limit: int = 20, db: Session = Depends(get_db)):
     pastes = crud_get_pastes(db, limit, page)
     return pastes
+
+
+@router.get("/{paste_url}", responses={**responses},
+            name="Posted paste (Public Access) at specific time")
+def get_posted_paste(paste_url: str,  db: Session = Depends(get_db)):
+    paste_content = crud_paste_public_url(db, paste_url)
+    if paste_content is None:
+        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="paste not exists or already expired")
+    return paste_content
