@@ -35,4 +35,13 @@ def crud_get_paste(db: Session, paste_id: str):
     return db.query(Paste).filter(Paste.paste_id == paste_id).first()
 
 
+def crud_delete_paste(db: Session, paste_id: str):
+    db_delete = db.query(Paste).filter(Paste.paste_id == paste_id).first()
+    if db_delete:
+        db.delete(db_delete)
+        db.commit()
+        return True
+
+
+
 

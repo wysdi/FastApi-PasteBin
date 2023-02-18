@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from schemas import Paste, PasteIn
 from database import SessionLocal, engine
 
-from cruds import crud_create_paste, crud_get_paste, crud_get_pastes
+from cruds import crud_create_paste, crud_get_paste, crud_get_pastes, crud_delete_paste
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from typing import List, Optional
 router = APIRouter()
@@ -34,6 +34,14 @@ def get_paste(paste_id: str, db: Session = Depends(get_db)):
     if db_paste is None:
         raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Paste not found")
     return db_paste
+
+
+@router.delete("/paste/{paste_id}", responses={**responses}, name="Delete a paste")
+def get_paste(paste_id: str, db: Session = Depends(get_db)):
+    deleted_paste = crud_delete_paste(db, paste_id)
+    if deleted_paste is None:
+        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Unable To Delete")
+    return {"status": "OK"}
 
 
 @router.get("/paste", response_model=List[Paste], responses={**responses},
