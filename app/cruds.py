@@ -1,9 +1,9 @@
-from models import Paste
 from sqlalchemy.orm import Session
-from schemas import PasteIn
 import uuid
 import secrets
 from datetime import datetime, date, timedelta
+from .models import Paste
+from .schemas import PasteIn
 
 
 def crud_create_paste(db: Session, paste: PasteIn):

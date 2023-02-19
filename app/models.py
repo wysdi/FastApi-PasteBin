@@ -5,7 +5,7 @@ from sqlalchemy import (
     DateTime
 )
 
-from database import Base
+from .database import Base
 
 
 class Paste(Base):
