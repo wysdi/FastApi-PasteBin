@@ -19,8 +19,8 @@ fileConfig(config.config_file_name)
 # target_metadata = mymodel.Base.metadata
 import sys
 sys.path.append('../')
-from models import Base # now it can be imported
-from database import DATABASE_URL
+from app.models import Base # now it can be imported
+from app.database import DATABASE_URL
 target_metadata = Base.metadata
 config.set_main_option('sqlalchemy.url', DATABASE_URL)
 

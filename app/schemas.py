@@ -12,5 +12,6 @@ class Paste(PasteIn):
 
     paste_id: UUID4
     url: str
+
     class Config:
         orm_mode = True
