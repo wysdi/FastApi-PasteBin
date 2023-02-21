@@ -64,6 +64,6 @@ def get_paste(paste_id: str, db: Session = Depends(get_db)):
             name="published paste (Public Access) at specific time")
 def get_posted_paste(paste_url: str,  db: Session = Depends(get_db)):
     paste_content = crud_paste_public_url(db, paste_url)
-    if paste_content is None:
-        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="paste not exists or already expired")
-    return paste_content
+    if 'error' in paste_content:
+        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail=paste_content['error'])
+    return paste_content['content']
