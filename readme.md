@@ -38,6 +38,15 @@ PasteBinApi consist of an Fastapi backend server and a SQLlite databases
 * Docker: a platform that allows developers to create, deploy, and run applications in containers
 * Pytest: a popular testing framework for Python that allows developers to write simple and easy-to-read tests
 
+## Database Structure
+
+| Field  | Type |
+| ------------- |:-------------:|
+| id      | int    |
+| paste_id      | varchar(50)     |
+| url      | varchar(10)     |
+| content      | longtext     |
+| expired_at      | datetime     |
 ## Deploy with docker compose
 
 ```shell
