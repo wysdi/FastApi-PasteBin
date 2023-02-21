@@ -4,6 +4,7 @@ from sqlalchemy import (
     String,
     DateTime
 )
+from datetime import datetime, date, timedelta
 
 from .database import Base
 
@@ -22,3 +23,13 @@ class Paste(Base):
         self.url = url
         self.content = content
         self.expired_at = expired_at
+
+        # if expired time not specified, it will be expired after 6 hours
+        if expired_at is None:
+            current = datetime.today()
+            self.expired_at = current + timedelta(hours=6)
+
+    @property
+    def is_expired(self):
+        current = datetime.today()
+        return current > self.expired_at

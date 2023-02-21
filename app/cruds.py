@@ -8,11 +8,6 @@ from .schemas import PasteIn
 
 def crud_create_paste(db: Session, paste: PasteIn):
 
-    # if expired time not specified, it will be expired after 6 hours
-    if paste.expired_at is None:
-        current = datetime.today()
-        paste.expired_at = current + timedelta(hours=6)
-
     db_paste = Paste(
         paste_id=str(uuid.uuid4()),
         url=secrets.token_urlsafe(10),
@@ -57,11 +52,12 @@ def crud_update_paste(db: Session, paste_id: str, paste: PasteIn):
 
 def crud_paste_public_url(db: Session, paste_url: str):
     db_paste = db.query(Paste).filter(Paste.url == paste_url).first()
+    error_text ='Paste not exist'
     if db_paste:
-        # check the expired time
-        current = datetime.today()
-        if db_paste.expired_at > current:
-            return db_paste.content
+        if not db_paste.is_expired:
+            return { "content": db_paste.content}
+        error_text = 'Paste is already expired'
 
+    return {"error": error_text }
 
 
