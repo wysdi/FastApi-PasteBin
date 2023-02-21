@@ -14,7 +14,7 @@ class Paste(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     paste_id = Column(String(50), unique=True, nullable=False)
-    url = Column(String(100))
+    url = Column(String(10))
     content = Column(String(16000000))
     expired_at = Column(DateTime)
 

@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('pastebin',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('paste_id', sa.String(length=50), nullable=False),
-    sa.Column('url', sa.String(length=100), nullable=True),
+    sa.Column('url', sa.String(length=10), nullable=True),
     sa.Column('content', sa.String(length=16000000), nullable=True),
     sa.Column('expired_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
